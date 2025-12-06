@@ -119,25 +119,8 @@ ScrumForge follows a modern full-stack architecture:
 
 # 🔧 Installation (Basic)
 
-```bash
-git clone https://github.com/LaurentGourouvin/ScrumForge
-cd ScrumForge
-docker compose up -d
-```
-
-Then open your browser:
-
-👉 http://localhost:3000
-
-You will be greeted by the Setup Wizard:
-
-Create the Admin account
-
-Set your organisation name
-
-Create your first Team
-
-(Optional) Import Users & Teams via JSON
+> ⚠️ The installation guide is not yet available.  
+> ScrumForge is still under active development — full Docker instructions will be published with the first deployable release.
 
 # 📡 Activation, Telemetry & Instance Metrics (Self-Hosted)
 
@@ -389,7 +372,3 @@ It is both a **learning project** and a fully usable **Scrum workflow tool**.
 ---
 
 🐸 **ScrumForge — Lightweight. Self-hosted. Scrum without the clutter.**
-
-```
-
-```
