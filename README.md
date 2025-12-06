@@ -5,7 +5,7 @@
 ### _Lightweight, self-hosted Scrum management platform_
 
 <p align="center">
-  <img src="public/assets/scrumforge-logo.png" alt="ScrumForge Logo" width="250" />
+  <img src="./logo_scrum_forge.png" alt="ScrumForge Logo" width="250" />
 </p>
 
 ---
@@ -97,7 +97,7 @@ ScrumForge follows a modern full-stack architecture:
 # 🔧 Installation (Basic)
 
 ```bash
-git clone https://github.com/USERNAME/ScrumForge
+git clone https://github.com/LaurentGourouvin/ScrumForge
 cd ScrumForge
 docker compose up -d
 ```
