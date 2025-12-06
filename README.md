@@ -13,6 +13,8 @@
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat)
 ![Status](https://img.shields.io/badge/status-In%20Progress-yellow?style=flat)
 ![Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node%20%7C%20GraphQL-blue?style=flat)
+![Telemetry](https://img.shields.io/badge/Telemetry-Opt--in-green)
+![Privacy-first](https://img.shields.io/badge/Privacy-First-blue?style=flat)
 
 ---
 
@@ -23,6 +25,22 @@
 Manage teams, products, backlogs, sprints, ceremonies, reports — all in one clean and intuitive interface.
 
 </div>
+
+---
+
+# Table of Contents
+
+- [What is ScrumForge?](#-what-is-scrumforge)
+- [Core Features](#-core-features)
+- [Installation](#-installation-basic)
+- [Activation & Telemetry](#-activation-telemetry--instance-metrics-self-hosted)
+- [Roadmap](#-roadmap)
+- [Scrum Features](#-scrum-features-summary)
+- [License](#️-license)
+- [Author](#-author)
+- [Tech Stack](#-tech-stack)
+- [Contributing](#-contributing)
+- [Vision](#-vision)
 
 ---
 
@@ -63,6 +81,11 @@ ScrumForge is both a **developer project** and a **practical Scrum tool**.
 - Sprint Retrospective (3-column format)
 - User & Team import via JSON
 - Wizard installation (Admin only)
+- Instance Activation System (optional)
+- Anonymous Telemetry (opt-in)
+- Global Metrics (instances, projects, users)
+- Security Patch Notifications (opt-in)
+- Product Newsletter Subscription (opt-in)
 - Strict role permissions:
   - Admin (technical only)
   - Organisation Manager
@@ -116,10 +139,87 @@ Create your first Team
 
 (Optional) Import Users & Teams via JSON
 
+# 📡 Activation, Telemetry & Instance Metrics (Self-Hosted)
+
+ScrumForge includes an **optional activation system** designed to provide:
+
+- a unique identity for each self-hosted instance,
+- fully anonymized usage telemetry,
+- **security patch notifications** for administrators,
+- optional **product newsletter subscription**,
+- aggregated global metrics displayed on the public portfolio.
+
+All of this is optional, privacy-friendly, and designed for self-hosting.
+
+---
+
+## 🟩 1. Instance Activation (Setup Wizard)
+
+During the installation wizard, the admin can activate the instance.
+
+Fields:
+
+- Admin email (optional but recommended)
+- Organisation name (optional)
+- Two separate checkboxes:
+  - ✔️ Receive **security alerts** (patches, vulnerabilities)
+  - ✔️ Receive **ScrumForge newsletter** (features, updates)
+
+If activation is enabled:
+
+- the backend contacts the official ScrumForge registry,
+- a **unique activation key** is generated (example: `SF-xxxx-xxxx-xxxx`),
+- this key becomes the **instance ID**,
+- telemetry is enabled (optional),
+- security & newsletter preferences are stored.
+
+If activation is skipped:
+
+- ScrumForge works normally (full functionality),
+- but no telemetry, newsletter, or security notifications.
+
+---
+
+## 🔐 2. Privacy & Data Protection
+
+ScrumForge does **not** store emails in clear text.
+
+The activation service stores:
+
+- `email_hash` → SHA-256(email + salt), used for uniqueness
+- `email_encrypted` → AES-256 encrypted, used only to send emails
+- `activation_key`
+- `security_opt_in`
+- `newsletter_opt_in`
+- latest known version
+- latest telemetry snapshot (anonymous)
+
+No Scrum data or user content is ever transmitted.
+
+---
+
+## 📊 3. Anonymous Telemetry (Optional)
+
+If enabled, the instance periodically sends a small anonymized JSON payload:
+
+```json
+{
+  "activation_key": "SF-xxxx-xxxx",
+  "version": "1.6.1",
+  "projects_count": 12,
+  "users_count": 9
+}
+```
+
 # 🗺️ Roadmap
 
 ### 🧩 Core Functionality
 
+- [ ] Instance Activation (Wizard)
+- [ ] Anonymous Telemetry (opt-in)
+- [ ] Aggregated Public Metrics (Portfolio)
+- [ ] Security Alerts email system
+- [ ] Newsletter opt-in system
 - [ ] Role system (Admin / OrgManager / PO / SM / Dev)
 - [ ] Team management
 - [ ] Product management
@@ -135,6 +235,10 @@ Create your first Team
 - [ ] CI/CD pipelines
 - [ ] OpenAPI / GraphQL schema documentation
 - [ ] Logging / monitoring layer
+- [ ] Activation API (external service)
+- [ ] Email encryption + hashed identity registry
+- [ ] Telemetry ingestion endpoint
+- [ ] Public metrics endpoint (for the portfolio)
 
 ### 🔮 Future Enhancements
 
@@ -143,6 +247,16 @@ Create your first Team
 - [ ] Notification system
 - [ ] Advanced dashboards for PO & SM
 - [ ] Workspace themes (Dark Mode, minimal mode)
+
+### 🔒 Security & Privacy
+
+ScrumForge is designed with a privacy-first philosophy:
+
+- Emails are never stored in clear text (AES-256 encrypted)
+- Telemetry is 100% anonymous
+- Activation is optional and non-blocking
+- No Scrum data or content is ever transmitted
+- Admins can disable telemetry at any time
 
 ---
 
@@ -205,8 +319,8 @@ See: [`LICENSE`](./LICENSE)
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/laurentgourouvin)
 
-**Laurent Gourouvin**  
-Creator of **ScrumForge**  
+**Laurent Gourouvin**
+Creator of **ScrumForge**
 2026 — Self-hosted Agile/Scrum Toolkit
 
 ---
@@ -275,3 +389,7 @@ It is both a **learning project** and a fully usable **Scrum workflow tool**.
 ---
 
 🐸 **ScrumForge — Lightweight. Self-hosted. Scrum without the clutter.**
+
+```
+
+```
