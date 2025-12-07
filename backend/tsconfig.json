@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    // Structure du projet
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    // Environnement Node.js
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2019",
+    "lib": ["esnext"],
+    "types": ["node"],
+
+    // Confort avec les imports (import express from "express")
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // Outputs
+    "sourceMap": true,
+
+    // Typage strict
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Perf et tolérance
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}
