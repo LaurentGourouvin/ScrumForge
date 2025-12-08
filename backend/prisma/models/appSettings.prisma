@@ -1,0 +1,7 @@
+model AppSettings {
+  id           Int      @id @default(1)
+  isInstalled  Boolean  @default(false)
+  instanceName String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
