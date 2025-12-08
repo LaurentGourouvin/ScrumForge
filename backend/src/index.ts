@@ -1,21 +1,18 @@
 import express from "express";
 import dotenv from "dotenv";
-
+import installationRouter from "./modules/installation/installation.router";
+import { setupSwagger } from "./lib/swagger";
 dotenv.config();
 const app = express();
 
-// Port (prend PORT du .env sinon 4000)
 const PORT = process.env.API_PORT || 4000;
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello from ScrumForge backend" });
-});
+/** App Router */
+app.use("/api/installation", installationRouter);
 
-app.get("/ping", (req, res) => {
-  res.send("pong");
-});
+setupSwagger(app);
 
 app.listen(PORT, () => {
   console.log(`✅ serveur Express démarré sur http://localhost:${PORT}`);

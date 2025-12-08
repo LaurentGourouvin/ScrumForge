@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { prismaMock } from "../prisma/prisma.mock";
 import { AppError } from "../../src/lib/appError";
 
-import { getInstallationStatus, runInitialInstallation } from "../../src/modules/installation/installation.service";
+import { runInitialInstallation, assertInstallationNotDone } from "../../src/modules/installation/installation.service";
 
 describe("Installation Service", () => {
   beforeEach(() => {
@@ -15,14 +15,14 @@ describe("Installation Service", () => {
   });
 
   // -----------------------------------------------------
-  // TEST getInstallationStatus()
+  // TEST assertInstallationNotDone()
   // -----------------------------------------------------
 
   it("returns isInstalled=false when no settings and 0 users", async () => {
     prismaMock.appSettings.findUnique.mockResolvedValue(null);
     prismaMock.user.count.mockResolvedValue(0);
 
-    const result = await getInstallationStatus();
+    const result = await assertInstallationNotDone();
 
     expect(result).toEqual({
       isInstalled: false,
@@ -35,7 +35,7 @@ describe("Installation Service", () => {
       isInstalled: true,
     });
 
-    await expect(getInstallationStatus()).rejects.toEqual(new AppError("INSTANCE_ALREADY_INSTALLED", 409));
+    await expect(assertInstallationNotDone()).rejects.toEqual(new AppError("INSTANCE_ALREADY_INSTALLED", 409));
   });
 
   it("throws USERS_ALREADY_EXIST when userCount > 0", async () => {
@@ -44,7 +44,7 @@ describe("Installation Service", () => {
     });
     prismaMock.user.count.mockResolvedValue(1);
 
-    await expect(getInstallationStatus()).rejects.toEqual(new AppError("USERS_ALREADY_EXIST", 409));
+    await expect(assertInstallationNotDone()).rejects.toEqual(new AppError("USERS_ALREADY_EXIST", 409));
   });
 
   // -----------------------------------------------------
