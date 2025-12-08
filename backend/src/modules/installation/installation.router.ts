@@ -3,7 +3,7 @@ import { installationHandler, installationStatusHandler } from "./installation.c
 
 const installationRouter = Router();
 
-installationRouter.post("/process", installationHandler);
+installationRouter.post("/complete", installationHandler);
 installationRouter.get("/status", installationStatusHandler);
 
 export default installationRouter;
