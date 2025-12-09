@@ -25,7 +25,14 @@ export default function InstallationAdminEmail({
 
   return (
     <div>
-      <Image className="mx-auto" src="/images/sf/logo_scrum_forge.png" alt="ScrumForge logo" width={200} height={200} />
+      <Image
+        className="mx-auto"
+        src="/images/sf/logo_scrum_forge.png"
+        alt="ScrumForge logo"
+        width={200}
+        height={200}
+        loading="eager"
+      />
 
       <div className="w-full max-w-3xl px-4">
         <section className="bg-slate-sf text-white p-6 rounded-md border border-[#ffffff15]">
