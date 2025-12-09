@@ -17,7 +17,7 @@ export default async function InstallPage() {
   }
 
   if (installationState.isInstalled) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
   return <Installation />;

@@ -2,6 +2,8 @@ import { Express } from "express";
 import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 import { installationPaths, installationSchemas } from "../modules/installation/installation.openapi";
+import { authPaths, authSchemas } from "../modules/auth/auth.schema";
+
 dotenv.config();
 
 const swaggerJSDoc = require("swagger-jsdoc");
@@ -22,10 +24,12 @@ export function setupSwagger(app: Express) {
       components: {
         schemas: {
           ...installationSchemas,
+          ...authSchemas,
         },
       },
       paths: {
         ...installationPaths,
+        ...authPaths,
       },
     },
     apis: [],
