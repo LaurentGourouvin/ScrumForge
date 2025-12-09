@@ -7,15 +7,18 @@ import InstallationGreetings from "./InstallationGreetings";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import InstallationLoader from "./InstallationLoader";
 
 export default function Installation() {
   const [step, setStep] = useState(0);
   const [adminEmail, setAdminEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const handleCreateAccount = async (password: string) => {
     let createAccount;
+    setIsLoading(true);
     try {
       createAccount = await InstallationService.completeInstallation({
         adminEmail,
@@ -33,17 +36,22 @@ export default function Installation() {
       return;
     }
 
-    toast.success("Successfully created! Redirecting to login page...", {
-      position: "top-right",
-    });
+    setTimeout(() => {
+      setIsLoading(false);
+      toast.success("Successfully created! Redirecting to login page...", {
+        position: "top-right",
+      });
+    }, 2000);
 
     setTimeout(() => {
       router.push("/login");
-    }, 2000);
+    }, 3000);
   };
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-charcoal-sf">
+      {isLoading && <InstallationLoader />}
+
       {step === 0 && <InstallationGreetings onNext={() => setStep(step + 1)} />}
       {step === 1 && (
         <InstallationAdminEmail
