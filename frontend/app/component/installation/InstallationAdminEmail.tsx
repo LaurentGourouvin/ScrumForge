@@ -15,7 +15,8 @@ export default function InstallationAdminEmail({
     e.preventDefault();
     setError(null);
 
-    if (!email || !email.includes("@")) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       setError("Please enter a valid email address.");
       return;
     }
@@ -49,9 +50,14 @@ export default function InstallationAdminEmail({
           <hr className="mt-4 text-[#ffffff1a]" />
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
             <div className="flex flex-col gap-1">
-              <label className="text-sm text-steel-sf">Administrator email</label>
+              <label htmlFor="admin-email" className="text-sm text-steel-sf">
+                Administrator email
+              </label>
               <input
                 type="email"
+                id="admin-email"
+                aria-required="true"
+                aria-invalid={!!error}
                 className="w-full bg-charcoal-sf border border-[#ffffff1a] rounded-md px-3 py-2 text-sm
                         text-white placeholder:text-[#aaaaaa80]
                         focus:outline-none focus:ring-2 focus:ring-green-300/40"
