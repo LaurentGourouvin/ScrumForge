@@ -43,6 +43,16 @@ export { Prisma }
  */
 export type AppSettings = Prisma.AppSettingsModel
 /**
+ * Model TeamMember
+ * 
+ */
+export type TeamMember = Prisma.TeamMemberModel
+/**
+ * Model Team
+ * 
+ */
+export type Team = Prisma.TeamModel
+/**
  * Model User
  * 
  */

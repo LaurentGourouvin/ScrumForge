@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as AuthService from "./auth.service";
-import { success } from "zod";
 
 export async function loginController(req: Request, res: Response) {
   const { email, password } = req.body;

@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 /** Import Router */
 import installationRouter from "./modules/installation/installation.router";
 import authRouter from "./modules/auth/auth.router";
+import teamsRouter from "./modules/teams/teams.router";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 /** App Router */
 app.use("/api/installation", installationRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/teams", teamsRouter);
 
 /** Inject Swagger in App */
 setupSwagger(app);
