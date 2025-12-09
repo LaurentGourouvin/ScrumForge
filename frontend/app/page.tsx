@@ -20,10 +20,5 @@ export default async function Home() {
     redirect("/install");
   }
 
-  return (
-    <main style={{ padding: "2rem" }}>
-      <h1>ScrumForge</h1>
-      <p>Application installed. This will be your main app/dashboard.</p>
-    </main>
-  );
+  redirect("/auth/login");
 }

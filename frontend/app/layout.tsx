@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import "./style/globals.css";
+import { AuthProvider } from "@/app/contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +16,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-charcoal-sf min-h-dvh min-w-dvw">
-        {children}
         <Toaster />
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

@@ -16,5 +16,8 @@ datasource db {
 
 enum Role {
   ADMIN
-  USER
+  ORGANIZATION_MANAGER
+  PRODUCT_OWNER
+  SCRUM_MASTER
+  DEVELOPER
 }

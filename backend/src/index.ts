@@ -1,9 +1,14 @@
 import express from "express";
 import dotenv from "dotenv";
-import installationRouter from "./modules/installation/installation.router";
 import { setupSwagger } from "./lib/swagger";
 import { logRequests } from "./middlewares/logRequest";
 import { corsMiddleware } from "./middlewares/cors";
+import cookieParser from "cookie-parser";
+
+/** Import Router */
+import installationRouter from "./modules/installation/installation.router";
+import authRouter from "./modules/auth/auth.router";
+
 dotenv.config();
 
 const PORT = process.env.API_PORT || 4000;
@@ -14,9 +19,11 @@ const app = express();
 app.use(express.json());
 app.use(logRequests);
 app.use(corsMiddleware);
+app.use(cookieParser());
 
 /** App Router */
 app.use("/api/installation", installationRouter);
+app.use("/api/auth", authRouter);
 
 /** Inject Swagger in App */
 setupSwagger(app);

@@ -606,6 +606,7 @@ export type AppSettingsScalarFieldEnum = (typeof AppSettingsScalarFieldEnum)[key
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
+  name: 'name',
   passwordHash: 'passwordHash',
   role: 'role',
   createdAt: 'createdAt',

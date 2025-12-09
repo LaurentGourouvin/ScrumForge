@@ -8,6 +8,7 @@ export const prismaMock = {
   user: {
     count: vi.fn(),
     create: vi.fn(),
+    findUnique: vi.fn(),
   },
   $transaction: vi.fn(async (callback: any) => {
     return callback(prismaMock);

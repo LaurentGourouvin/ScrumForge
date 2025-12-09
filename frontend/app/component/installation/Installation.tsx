@@ -44,7 +44,7 @@ export default function Installation() {
     }, 2000);
 
     setTimeout(() => {
-      router.push("/login");
+      router.push("/auth/login");
     }, 3000);
   };
 
