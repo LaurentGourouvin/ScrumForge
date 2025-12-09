@@ -1,6 +1,6 @@
 "use client";
 import ProtectedRoute from "@/app/component/auth/ProtectedRoute";
-import DashboardLayout from "../component/layout/DashboardLayout";
+import DefaultLayout from "../component/layout/DefaultLayout";
 import { useAuth } from "@/app/hooks/useAuth";
 
 export default function Dashboard() {
@@ -8,7 +8,7 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <DashboardLayout
+      <DefaultLayout
         topbarTitle="Dashboard"
         topbarSubtitle="Welcome back"
         topbarActions={
@@ -30,7 +30,7 @@ export default function Dashboard() {
             <p>Role: {user?.role}</p>
           </div>
         </div>
-      </DashboardLayout>
+      </DefaultLayout>
     </ProtectedRoute>
   );
 }
