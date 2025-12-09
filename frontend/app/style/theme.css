@@ -1,0 +1,16 @@
+@theme {
+  /* 🎨 Couleurs */
+  --color-charcoal-sf: #111418;
+  --color-slate-sf: #181c20;
+  --color-graphite-sf: #2a2f36;
+  --color-steel-sf: #8a929e;
+  --color-white-sf: #ffffff;
+  --color-neon-sf: #40e66f;
+  --color-neon-hover-sf: #29c957;
+  --color-cyan-sf: #40c3f7;
+
+  --gradient-scrumforge: linear-gradient(90deg, #40e66f 0%, #40c3f7 100%);
+
+  /* 🔡 Police */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+}

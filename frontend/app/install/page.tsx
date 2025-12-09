@@ -1,14 +1,14 @@
 import { redirect } from "next/navigation";
 import * as InstallationService from "@/app/lib/api/installation.api";
-import { InstallationStatus } from "@/types/installation.type";
+import type { InstallationStatus } from "@/types/installation.type";
+import Installation from "../component/installation/Installation";
 
-export default async function Home() {
+export default async function InstallPage() {
   let installationState: InstallationStatus;
 
   try {
     installationState = await InstallationService.getInstallationStatus();
   } catch (error) {
-    console.error(error);
     return (
       <main style={{ padding: "2rem" }}>
         <h1>Application is not running.</h1>
@@ -16,14 +16,9 @@ export default async function Home() {
     );
   }
 
-  if (!installationState.isInstalled) {
-    redirect("/install");
+  if (installationState.isInstalled) {
+    redirect("/login");
   }
 
-  return (
-    <main style={{ padding: "2rem" }}>
-      <h1>ScrumForge</h1>
-      <p>Application installed. This will be your main app/dashboard.</p>
-    </main>
-  );
+  return <Installation />;
 }
