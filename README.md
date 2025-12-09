@@ -198,7 +198,7 @@ If enabled, the instance periodically sends a small anonymized JSON payload:
 
 ### 🧩 Core Functionality
 
-- [ ] Instance Activation (Wizard)
+- [x] Instance Activation (Wizard)
 - [ ] Anonymous Telemetry (opt-in)
 - [ ] Aggregated Public Metrics (Portfolio)
 - [ ] Security Alerts email system
