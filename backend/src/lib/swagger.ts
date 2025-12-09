@@ -2,7 +2,8 @@ import { Express } from "express";
 import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 import { installationPaths, installationSchemas } from "../modules/installation/installation.openapi";
-import { authPaths, authSchemas } from "../modules/auth/auth.schema";
+import { authPaths, authSchemas } from "../modules/auth/auth.openapi";
+import { teamsPaths, teamsSchemas } from "../modules/teams/teams.openapi";
 
 dotenv.config();
 
@@ -25,11 +26,13 @@ export function setupSwagger(app: Express) {
         schemas: {
           ...installationSchemas,
           ...authSchemas,
+          ...teamsSchemas,
         },
       },
       paths: {
         ...installationPaths,
         ...authPaths,
+        ...teamsPaths,
       },
     },
     apis: [],
