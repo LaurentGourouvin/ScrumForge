@@ -1,22 +1,10 @@
 "use client";
 
-import { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
+import { DefaultLayoutProps } from "@/types/defaultLayout";
 
-interface DashboardLayoutProps {
-  children: ReactNode;
-  topbarTitle: string;
-  topbarSubtitle?: string;
-  topbarActions?: ReactNode;
-}
-
-export default function DashboardLayout({
-  children,
-  topbarTitle,
-  topbarSubtitle,
-  topbarActions,
-}: DashboardLayoutProps) {
+export default function DefaultLayout({ children, topbarTitle, topbarSubtitle, topbarActions }: DefaultLayoutProps) {
   return (
     <div className="flex h-screen overflow-hidden bg-charcoal-sf">
       {/* Sidebar */}

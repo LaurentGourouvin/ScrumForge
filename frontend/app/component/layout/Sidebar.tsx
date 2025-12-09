@@ -14,17 +14,13 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 bg-slate-sf border-r border-[#2A2F36] flex flex-col h-screen">
-      {/* Header */}
       <div className="px-5 py-4 flex items-center gap-3 border-b border-[#2A2F36]">
-        <div className="text-lg font-semibold text-white mx-auto flex items-center">
-          <Image src="/images/sf/logo_scrum_forge.png" alt="ScrumForge Logo" width={90} height={90} loading="eager" />
-          ScrumForge
+        <div className="text-lg font-semibold text-steel-sf mx-auto flex flex-col">
+          <p>ScrumForge</p>
         </div>
       </div>
 
-      {/* Navigation */}
       <div className="flex-1 overflow-y-auto">
-        {/* Workspace Section */}
         <div className="px-5 pt-3 pb-1 text-[11px] uppercase tracking-wider text-steel-sf">Workspace</div>
         <nav>
           <Link
@@ -45,7 +41,6 @@ export default function Sidebar() {
           </Link>
         </nav>
 
-        {/* Product Section */}
         <div className="px-5 pt-3 pb-1 text-[11px] uppercase tracking-wider text-steel-sf">Product</div>
         <nav>
           <Link
@@ -83,7 +78,6 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      {/* Footer */}
       <div className="px-5 py-3 border-t border-[#2A2F36] text-xs text-steel-sf">
         <div>Signed in as</div>
         <div className="font-semibold text-white mt-1">
