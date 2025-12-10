@@ -31,7 +31,7 @@ export default function AdminSideBar() {
         <Link
           href="#"
           className={`block px-5 py-2 text-sm transition-colors ${
-            isActive("/product/create")
+            isActive("/dashboard/organization/create")
               ? "bg-[#20252c] text-white"
               : "text-steel-sf hover:bg-[#20252c] hover:text-white"
           }`}
@@ -46,9 +46,11 @@ export default function AdminSideBar() {
       </div>
       <nav>
         <Link
-          href="#"
+          href="/dashboard/user/create"
           className={`block px-5 py-2 text-sm transition-colors ${
-            isActive("/user/create") ? "bg-[#20252c] text-white" : "text-steel-sf hover:bg-[#20252c] hover:text-white"
+            isActive("/dashboard/user/create")
+              ? "bg-[#20252c] text-white"
+              : "text-steel-sf hover:bg-[#20252c] hover:text-white"
           }`}
         >
           Create user
