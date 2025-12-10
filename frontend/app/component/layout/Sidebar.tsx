@@ -1,16 +1,12 @@
 "use client";
-
-import Link from "next/link";
-import Image from "next/image";
-
+import DefaultSideBar from "./DefaultSideBar";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/hooks/useAuth";
+import AdminSideBar from "./AdminSideBar";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { user } = useAuth();
-
-  const isActive = (path: string) => pathname === path;
 
   return (
     <aside className="w-64 bg-slate-sf border-r border-[#2A2F36] flex flex-col h-screen">
@@ -20,7 +16,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      {/* <div className="flex-1 overflow-y-auto">
         <div className="px-5 pt-3 pb-1 text-[11px] uppercase tracking-wider text-steel-sf">Workspace</div>
         <nav>
           <Link
@@ -76,7 +72,10 @@ export default function Sidebar() {
             Reports
           </Link>
         </nav>
-      </div>
+      </div> */}
+
+      {user?.role !== "ADMIN" && <DefaultSideBar />}
+      {user?.role === "ADMIN" && <AdminSideBar />}
 
       <div className="px-5 py-3 border-t border-[#2A2F36] text-xs text-steel-sf">
         <div>Signed in as</div>
