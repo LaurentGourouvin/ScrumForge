@@ -26,7 +26,7 @@ export async function getTeamByIdController(req: Request, res: Response) {
   }
 }
 
-export async function createTeam(req: Request, res: Response) {
+export async function createTeamController(req: Request, res: Response) {
   const { name, description } = req.body;
 
   try {
@@ -49,7 +49,7 @@ export async function updateTeamController(req: Request, res: Response) {
   }
 }
 
-export async function deleteTeam(req: Request, res: Response) {
+export async function deleteTeamController(req: Request, res: Response) {
   const id = req.params.id || "";
 
   try {

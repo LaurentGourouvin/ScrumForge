@@ -6,8 +6,8 @@ const teamsRouter = Router();
 
 teamsRouter.get("/", authMiddleware, TeamsController.getAllTeamController);
 teamsRouter.get("/:id", authMiddleware, TeamsController.getTeamByIdController);
-teamsRouter.post("/", authMiddleware, TeamsController.createTeam);
+teamsRouter.post("/", authMiddleware, TeamsController.createTeamController);
 teamsRouter.patch("/:id", authMiddleware, TeamsController.updateTeamController);
-teamsRouter.delete("/:id", authMiddleware, TeamsController.deleteTeam);
+teamsRouter.delete("/:id", authMiddleware, TeamsController.deleteTeamController);
 
 export default teamsRouter;
