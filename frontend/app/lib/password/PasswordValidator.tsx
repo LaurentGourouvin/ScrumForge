@@ -16,3 +16,12 @@ export function getPasswordValidationCheck(password: string, confirmPassword: st
     isValid: hasMinLength && hasSpecialChar && hasUppercase && hasLowercase && matchesConfirm,
   };
 }
+
+export function isValidPassword(password: string): boolean {
+  const hasMinLength = password.length >= 12;
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>_\-+=;/'\[\]\\]/.test(password);
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+
+  return hasMinLength && hasSpecialChar && hasUppercase && hasLowercase;
+}
