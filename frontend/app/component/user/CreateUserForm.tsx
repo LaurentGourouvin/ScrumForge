@@ -17,14 +17,6 @@ export default function CreateUserForms() {
   const [error, setError] = useState<string | null>(null);
   const [roleList, setRoleList] = useState<{ label: string; value: string }[]>([]);
 
-  const roles = [
-    { value: "ADMIN", label: "Admin" },
-    { value: "ORGANIZATION_MANAGER", label: "Organization Manager" },
-    { value: "PRODUCT_OWNER", label: "Product Owner" },
-    { value: "SCRUM_MASTER", label: "Scrum Master" },
-    { value: "DEVELOPER", label: "Developer" },
-  ];
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -44,19 +36,13 @@ export default function CreateUserForms() {
     setIsLoading(true);
 
     try {
-      const res = await UsersService.create({ email, password, name, role });
-      setTimeout(() => {
-        toast.success("User successfully created.");
-        onCancel();
-      }, 2000);
+      await UsersService.create({ email, password, name, role });
+      toast.success("User successfully created.");
+      onCancel();
     } catch (err: any) {
-      setTimeout(() => {
-        setError(`${err.response.data}` || "An error occurred");
-      }, 2000);
+      setError(`${err?.response?.data}` || "An error occurred");
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+      setIsLoading(false);
     }
   };
 
@@ -73,7 +59,7 @@ export default function CreateUserForms() {
       try {
         const roles = await RolesService.getRoles();
         setRoleList(mapRolesToOptions(roles));
-      } catch (eror: any) {
+      } catch (error: any) {
         console.error(error);
       }
     };
