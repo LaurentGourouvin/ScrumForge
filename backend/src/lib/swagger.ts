@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { installationPaths, installationSchemas } from "../modules/installation/installation.openapi";
 import { authPaths, authSchemas } from "../modules/auth/auth.openapi";
 import { teamsPaths, teamsSchemas } from "../modules/teams/teams.openapi";
+import { usersPaths, usersSchemas } from "../modules/users/users.openapi";
 
 dotenv.config();
 
@@ -27,12 +28,14 @@ export function setupSwagger(app: Express) {
           ...installationSchemas,
           ...authSchemas,
           ...teamsSchemas,
+          ...usersSchemas,
         },
       },
       paths: {
         ...installationPaths,
         ...authPaths,
         ...teamsPaths,
+        ...usersPaths,
       },
     },
     apis: [],
