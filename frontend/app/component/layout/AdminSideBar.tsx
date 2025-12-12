@@ -56,9 +56,11 @@ export default function AdminSideBar() {
           Create user
         </Link>
         <Link
-          href="/#"
+          href="/dashboard/user/manage"
           className={`block px-5 py-2 text-sm transition-colors ${
-            isActive("/user/manage") ? "bg-[#20252c] text-white" : "text-steel-sf hover:bg-[#20252c] hover:text-white"
+            isActive("/dashboard/user/manage")
+              ? "bg-[#20252c] text-white"
+              : "text-steel-sf hover:bg-[#20252c] hover:text-white"
           }`}
         >
           Manage users
