@@ -33,3 +33,7 @@ export const updateCurrentPassword = z
       .regex(/[!@#$%^&*(),.?":{}|<>_\-+=;/'\[\]\\]/, "Password must contain at least one special character"),
   })
   .strict();
+
+export const uuidParams = z.object({
+  id: z.uuidv4("Invalid ID format"),
+});

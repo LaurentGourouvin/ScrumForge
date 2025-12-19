@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as AuthService from "./auth.service";
 
-export async function loginController(req: Request, res: Response) {
+export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
 
   try {
@@ -24,12 +24,13 @@ export async function loginController(req: Request, res: Response) {
   }
 }
 
-export async function logoutController(req: Request, res: Response) {
+export async function logout(req: Request, res: Response) {
+  res.locals.user = null;
   res.clearCookie("token");
   return res.status(200).json({ success: true, message: "Logout successful." });
 }
 
-export async function getMeController(req: Request, res: Response) {
+export async function getMe(req: Request, res: Response) {
   try {
     const { userId } = res.locals.user;
     const user = await AuthService.getCurrentUser(userId);

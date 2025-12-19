@@ -2,7 +2,7 @@ import { Router } from "express";
 import * as UsersController from "./users.controller";
 import { authMiddleware } from "../../middlewares/auth";
 import { requireRole } from "../../middlewares/roles";
-import { validateBody } from "../../middlewares/validation";
+import { validateBody, validateParams } from "../../middlewares/validation";
 import * as UserSchema from "./users.validation";
 
 const userRouter = Router();
@@ -24,6 +24,12 @@ userRouter.post(
 );
 
 userRouter.patch("/:id", authMiddleware, requireRole("ADMIN", "ORGANIZATION_MANAGER"), UsersController.updateUser);
-userRouter.delete("/:id", authMiddleware, requireRole("ADMIN"), UsersController.deleteUser);
+userRouter.delete(
+  "/:id",
+  authMiddleware,
+  requireRole("ADMIN"),
+  validateParams(UserSchema.uuidParams),
+  UsersController.deleteUser
+);
 
 export default userRouter;
