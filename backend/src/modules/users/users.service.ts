@@ -99,6 +99,41 @@ export async function update(user: UpdateUserInput): Promise<User> {
   }
 }
 
+export async function updateCurrentUser(user: UpdateUserInput): Promise<User> {
+  if (!user.id) {
+    throw new AppError("USER_ID_MISSING", 400);
+  }
+
+  let data: Partial<{
+    name: string;
+    email: string;
+    passwordHash: string;
+  }> = {};
+
+  if (user.email) data.email = user.email;
+  if (user.name !== undefined) data.name = user.name;
+  if (user.newPassword) {
+    data.passwordHash = await hashPassword(user.newPassword);
+  }
+
+  if (Object.keys(data).length === 0) {
+    throw new AppError("NO_FIELDS_TO_UPDATE", 400);
+  }
+
+  try {
+    const userUpdate = await prisma.user.update({ where: { id: user.id }, data });
+    return userUpdate;
+  } catch (error: any) {
+    if (error.code === "P2025") {
+      throw new AppError("USER_NOT_FOUND", 404);
+    }
+    if (error.code === "P2002") {
+      throw new AppError("USER_EMAIL_ALREADY_USE", 409);
+    }
+    throw error;
+  }
+}
+
 export async function deleteUser(id: string): Promise<{ success: boolean }> {
   if (!id) {
     throw new AppError("MISSING_USER_ID", 400);
