@@ -4,6 +4,8 @@ import { setupSwagger } from "./lib/swagger";
 import { logRequests } from "./middlewares/logRequest";
 import { corsMiddleware } from "./middlewares/cors";
 import cookieParser from "cookie-parser";
+import { Request, Response, NextFunction } from "express";
+import { AppError } from "./lib/appError";
 
 /** Import Router */
 import installationRouter from "./modules/installation/installation.router";
@@ -37,4 +39,24 @@ setupSwagger(app);
 
 app.listen(PORT, () => {
   console.log(`✅ serveur Express démarré sur http://localhost:${PORT}`);
+});
+
+/** Global Error Handler */
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof AppError) {
+    return res.status(err.status).json({
+      error: {
+        code: err.code,
+        status: err.status,
+        details: err?.details,
+      },
+    });
+  }
+
+  return res.status(500).json({
+    error: {
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Internal server error",
+    },
+  });
 });

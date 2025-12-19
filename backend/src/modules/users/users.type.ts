@@ -12,5 +12,5 @@ export interface UpdateUserInput {
   email?: string;
   name?: string;
   role?: Role;
-  newPassword: string;
+  newPassword?: string;
 }
