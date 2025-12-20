@@ -80,8 +80,10 @@ export async function updateUser(req: Request, res: Response) {
 export async function deleteUser(req: Request, res: Response) {
   const id = req.params.id || "";
   try {
-    const user = await UsersService.deleteUser(id);
-    return res.status(200).json(user);
+    await UsersService.deleteUser(id);
+    return res.status(200).json({
+      message: "User deleted successfully",
+    });
   } catch (error: any) {
     return res.status(error.status || 500).json(error.message || "Internal server error");
   }
