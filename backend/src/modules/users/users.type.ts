@@ -14,3 +14,9 @@ export interface UpdateUserInput {
   role?: Role;
   newPassword?: string;
 }
+
+export interface UpdateUserPasswordInput {
+  id: string;
+  currentPassword: string;
+  newPassword: string;
+}

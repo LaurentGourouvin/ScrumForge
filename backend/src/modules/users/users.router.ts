@@ -11,6 +11,12 @@ userRouter.get("/", authMiddleware, UsersController.getAllUsers);
 userRouter.get("/:id", authMiddleware, UsersController.getUserById);
 userRouter.get("/by-team/:id", authMiddleware, UsersController.getUsersByTeamId);
 userRouter.patch("/me", authMiddleware, UsersController.updateCurrentUser);
+userRouter.patch(
+  "/me/password",
+  authMiddleware,
+  validateBody(UserSchema.updateCurrentPassword),
+  UsersController.updateCurrentUserPassword
+);
 
 /** ============================ */
 /**     Admin and manager routes */

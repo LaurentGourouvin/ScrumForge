@@ -1,8 +1,8 @@
 import { Role, TeamMember, User } from "../../../prisma/generated/prisma/client";
 import { AppError } from "../../lib/appError";
-import { hashPassword } from "../../lib/auth.utils";
+import { hashPassword, comparePassword } from "../../lib/auth.utils";
 import { prisma } from "../../lib/prisma";
-import { CreateUserInput, UpdateUserInput } from "./users.type";
+import { CreateUserInput, UpdateUserInput, UpdateUserPasswordInput } from "./users.type";
 
 export async function getAllUsers(): Promise<{ users: User[]; count: number }> {
   const users = await prisma.user.findMany();
@@ -94,6 +94,41 @@ export async function update(user: UpdateUserInput): Promise<User> {
     }
     if (error.code === "P2002") {
       throw new AppError("USER_EMAIL_ALREADY_USE", 409);
+    }
+    throw error;
+  }
+}
+
+export async function updateCurrentUserPassword(userCredentials: UpdateUserPasswordInput): Promise<void> {
+  if (!userCredentials.id) {
+    throw new AppError("USER_ID_MISSING", 400);
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userCredentials.id },
+    select: { id: true, passwordHash: true },
+  });
+
+  if (!user) {
+    throw new AppError("USER_NOT_FOUND", 404);
+  }
+
+  const isPasswordValid = await comparePassword(userCredentials.currentPassword, user.passwordHash);
+
+  if (!isPasswordValid) {
+    throw new AppError("INVALID_CURRENT_PASSWORD", 401);
+  }
+
+  const newPasswordHash = await hashPassword(userCredentials.newPassword);
+
+  try {
+    await prisma.user.update({
+      where: { id: userCredentials.id },
+      data: { passwordHash: newPasswordHash },
+    });
+  } catch (error: any) {
+    if (error.code === "P2025") {
+      throw new AppError("USER_NOT_FOUND", 404);
     }
     throw error;
   }
