@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as UsersService from "./users.service";
 
 export async function getAllUsers(req: Request, res: Response) {
@@ -40,7 +40,7 @@ export async function createUser(req: Request, res: Response) {
   }
 }
 
-export async function updateCurrentUser(req: Request, res: Response) {
+export async function updateCurrentUser(req: Request, res: Response, next: NextFunction) {
   const { email, name, newPassword } = req.body;
   const id = res.locals?.user.id;
 
@@ -48,7 +48,21 @@ export async function updateCurrentUser(req: Request, res: Response) {
     const user = await UsersService.updateCurrentUser({ id, email, name, newPassword });
     return res.status(200).json(user);
   } catch (error: any) {
-    return res.status(error.status || 500).json(error.message || "Internal server error");
+    next(error);
+  }
+}
+
+export async function updateCurrentUserPassword(req: Request, res: Response, next: NextFunction) {
+  const { currentPassword, newPassword } = req.body;
+  const id = res.locals?.user.id;
+
+  try {
+    await UsersService.updateCurrentUserPassword({ id, currentPassword, newPassword });
+    return res.status(200).json({
+      message: "Password updated successfully",
+    });
+  } catch (error: any) {
+    next(error);
   }
 }
 
@@ -66,8 +80,10 @@ export async function updateUser(req: Request, res: Response) {
 export async function deleteUser(req: Request, res: Response) {
   const id = req.params.id || "";
   try {
-    const user = await UsersService.deleteUser(id);
-    return res.status(200).json(user);
+    await UsersService.deleteUser(id);
+    return res.status(200).json({
+      message: "User deleted successfully",
+    });
   } catch (error: any) {
     return res.status(error.status || 500).json(error.message || "Internal server error");
   }

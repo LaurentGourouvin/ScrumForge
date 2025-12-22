@@ -33,3 +33,22 @@ export const updateCurrentPassword = z
       .regex(/[!@#$%^&*(),.?":{}|<>_\-+=;/'\[\]\\]/, "Password must contain at least one special character"),
   })
   .strict();
+
+export const uuidParams = z.object({
+  id: z.uuidv4("Invalid ID format"),
+});
+
+export const updateUserAsAdmin = z.object({
+  email: z.email("Invalid email format").optional(),
+  name: z.string().min(1, "Name is required").optional(),
+  password: z
+    .string()
+    .min(12, "Password must be at least 12 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+    .regex(/[!@#$%^&*(),.?":{}|<>_\-+=;/'\[\]\\]/, "Password must contain at least one special character")
+    .optional(),
+  role: z
+    .enum([Role.ADMIN, Role.ORGANIZATION_MANAGER, Role.PRODUCT_OWNER, Role.SCRUM_MASTER, Role.DEVELOPER])
+    .optional(),
+});

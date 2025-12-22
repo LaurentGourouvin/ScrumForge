@@ -10,7 +10,22 @@ export function validateBody(schema: ZodType) {
       next();
     } catch (error: unknown) {
       if (error instanceof ZodError) {
-        const messages = error.issues.map((zError) => zError.message);
+        const messages = error.issues.map((issue) => issue.message);
+        return next(new AppError("VALIDATION_ERROR", 400, messages));
+      }
+      return next(error);
+    }
+  };
+}
+
+export function validateParams(schema: ZodType) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    try {
+      schema.parse(req.params);
+      next();
+    } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        const messages = error.issues.map((issue) => issue.message);
         return next(new AppError("VALIDATION_ERROR", 400, messages));
       }
       return next(error);
