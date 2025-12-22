@@ -27,7 +27,14 @@ export default function ManageUserCard({
       </p>
       <hr className="border-b border-[#2A2F36] my-2" />
       <div className="flex justify-end gap-3.5">
-        <UserRoundPen size={20} className="text-amber-300 hover:text-amber-200 hover:cursor-pointer" />
+        <UserRoundPen
+          size={20}
+          className="text-amber-300 hover:text-amber-200 hover:cursor-pointer"
+          onClick={() => {
+            onSelect(user);
+            onShowEditModal(true);
+          }}
+        />
         <Trash2
           size={20}
           className="text-red-500 hover:text-red-400 hover:cursor-pointer"
