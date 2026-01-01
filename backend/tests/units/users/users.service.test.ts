@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { prismaMock } from "../prisma/prisma.mock";
-import { AppError } from "../../src/lib/appError";
+import { prismaMock } from "../../prisma/prisma.mock";
+import { AppError } from "../../../src/lib/appError";
 
 import {
   getAllUsers,
@@ -9,11 +9,11 @@ import {
   create,
   update,
   deleteUser,
-} from "../../src/modules/users/users.service";
+} from "../../../src/modules/users/users.service";
 
-import { hashPassword } from "../../src/lib/auth.utils";
+import { hashPassword } from "../../../src/lib/auth.utils";
 
-vi.mock("../../src/lib/auth.utils", () => ({
+vi.mock("../../../src/lib/auth.utils", () => ({
   hashPassword: vi.fn(),
 }));
 

@@ -1,6 +1,6 @@
 // roles.service.test.ts
 import { describe, it, expect } from "vitest";
-import * as RolesService from "../../src/modules/roles/roles.service";
+import * as RolesService from "../../../src/modules/roles/roles.service";
 
 describe("Roles Service", () => {
   // -----------------------------------------------------

@@ -1,8 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { prismaMock } from "../prisma/prisma.mock";
-import { AppError } from "../../src/lib/appError";
+import { prismaMock } from "../../prisma/prisma.mock";
+import { AppError } from "../../../src/lib/appError";
 
-import { runInitialInstallation, assertInstallationNotDone } from "../../src/modules/installation/installation.service";
+import {
+  runInitialInstallation,
+  assertInstallationNotDone,
+} from "../../../src/modules/installation/installation.service";
 
 describe("Installation Service", () => {
   beforeEach(() => {
