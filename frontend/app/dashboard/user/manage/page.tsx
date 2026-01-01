@@ -11,6 +11,7 @@ import type { User } from "@/types/user.type";
 import ManageUserDeleteModal from "@/app/component/user/ManageUserDeleteModal";
 import { deleteUser } from "@/app/lib/api/users.api";
 import toast from "react-hot-toast";
+import UpdateUserFormModal from "@/app/component/user/UpdateUserFormModal";
 
 export default function UserManagePage() {
   const { user, logout } = useAuth();
@@ -90,6 +91,8 @@ export default function UserManagePage() {
         {showDeleteModal && (
           <ManageUserDeleteModal onShowModal={setShowDeleteModal} user={selectedUser} onDelete={handleDeleteAction} />
         )}
+        {/* Update modal */}
+        {showEditModal && <UpdateUserFormModal onShowModal={setShowEditModal} user={selectedUser} />}
       </DefaultLayout>
     </ProtectedRoute>
   );
