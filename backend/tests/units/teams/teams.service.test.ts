@@ -146,7 +146,6 @@ describe("Teams Service", () => {
   // -----------------------------------------------------
 
   it("throws MISSING_ID_TEAM_PARAMETER when id is missing", async () => {
-    // @ts-expect-error runtime case
     await expect(
       updateTeam({
         id: "",
