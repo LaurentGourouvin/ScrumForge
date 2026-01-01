@@ -62,7 +62,7 @@ export default function UpdateUserFormModal({
             <CircleX size={24} className="text-steel-sf hover:cursor-pointer" onClick={() => onShowModal(false)} />
           </div>
 
-          <p className="text-sm text-steel-sf mt-1">Add a new team member to the system</p>
+          <p className="text-sm text-steel-sf mt-1">Update a team member to the system</p>
         </div>
 
         <div className="bg-slate-sf border border-[#2A2F36] rounded-lg p-6">
