@@ -40,7 +40,8 @@ describe("User API Integration Tests", () => {
       expect(user.role).toBe("ADMIN");
 
       expect(response.headers["set-cookie"]).toBeDefined();
-      const cookies = response.headers["set-cookie"];
+      const headers = response.headers["set-cookie"];
+      const cookies = Array.isArray(headers) ? headers : headers ? [headers] : [];
       expect(cookies.some((cookie: string) => cookie.startsWith("token="))).toBe(true);
     });
   });

@@ -10,5 +10,7 @@ export const loginAsAdmin = async (app: Application, prisma: PrismaClient): Prom
     password: "TestPassword123!",
   });
 
-  return response.headers["set-cookie"];
+  const cookies = response.headers["set-cookie"];
+
+  return Array.isArray(cookies) ? cookies : cookies ? [cookies] : [];
 };
