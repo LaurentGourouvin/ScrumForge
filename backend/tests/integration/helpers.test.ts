@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { setupTestDatabase, cleanDatabase, closeTestDatabase, getTestPrisma } from "../../integration/helpers/db";
+import { setupTestDatabase, cleanDatabase, closeTestDatabase, getTestPrisma } from "./helpers/db";
 
 describe("Database Helpers", () => {
   beforeAll(async () => {

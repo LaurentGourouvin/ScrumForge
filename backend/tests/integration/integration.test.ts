@@ -1,7 +1,7 @@
 // tests/integration/config.test.ts
 
 import { describe, it, expect } from "vitest";
-import { testConfig, getDatabaseUrl } from "../../integration/config";
+import { testConfig, getDatabaseUrl } from "./config";
 
 describe("Test Integration Config", () => {
   it("should have correct database config", () => {
