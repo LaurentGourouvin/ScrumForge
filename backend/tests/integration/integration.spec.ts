@@ -1,5 +1,3 @@
-// tests/integration/config.test.ts
-
 import { describe, it, expect } from "vitest";
 import { testConfig, getDatabaseUrl } from "./config";
 
