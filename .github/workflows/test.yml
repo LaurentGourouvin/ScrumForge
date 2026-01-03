@@ -1,0 +1,68 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [master, main]
+  push:
+    branches: [master, main]
+
+jobs:
+  test-backend:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: scrumforge_test
+          POSTGRES_USER: scrumforge_test
+          POSTGRES_PASSWORD: scrumforge_test
+        ports:
+          - 5441:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: backend
+        run: npx prisma generate
+
+      - name: Run migrations
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://scrumforge_test:scrumforge_test@localhost:5441/scrumforge_test
+        run: npx prisma migrate deploy
+
+      - name: Run unit tests
+        working-directory: backend
+        run: npm run test:unit
+
+      - name: Run integration tests
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://scrumforge_test:scrumforge_test@localhost:5441/scrumforge_test
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret_for_ci
+          JWT_EXPIRES_IN: 7d
+          API_PORT: 4020
+          TEST_DEBUG: false
+          TEST_PERSIST_DB: false
+        run: npm run test:integration
