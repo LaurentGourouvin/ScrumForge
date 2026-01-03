@@ -91,4 +91,30 @@ describe("User API Integration Tests", () => {
       expect(userResponse.body.id).toBe(id);
     });
   });
+
+  describe("DELETE /api/users/:id", () => {
+    it("should delete user with valid cookie", async () => {
+      const prisma = getTestPrisma();
+
+      const cookies = await loginAsAdmin(app, prisma);
+      const newUser = {
+        email: "test@scrumforge.com",
+        password: "SecurePass123!",
+        role: "DEVELOPER",
+        name: "Test User",
+      };
+
+      const response = await request(app).post("/api/users").set("Cookie", cookies).send(newUser);
+      const { id } = response.body;
+
+      const deleteResponse = await request(app).delete(`/api/users/${id}`).set("Cookie", cookies);
+      expect(deleteResponse.status).toBe(200);
+      expect(deleteResponse.body.message).toBe("User deleted successfully");
+    });
+
+    it("should reject user deletion without cookie", async () => {
+      const deleteResponse = await request(app).delete(`/api/users/some-user-id`);
+      expect(deleteResponse.status).toBe(401);
+    });
+  });
 });
