@@ -14,9 +14,11 @@ import usersRouter from "./modules/users/users.router";
 import rolesRouter from "./modules/roles/roles.router";
 /** ============= */
 
-dotenv.config();
+if (process.env.NODE_ENV !== "test") {
+  dotenv.config();
+}
 const PORT = process.env.API_PORT || 4000;
-const app = express();
+export const app = express();
 
 /** App setup */
 app.use(express.json());

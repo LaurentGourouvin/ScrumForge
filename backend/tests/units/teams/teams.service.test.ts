@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { prismaMock } from "../prisma/prisma.mock";
-import { AppError } from "../../src/lib/appError";
+import { prismaMock } from "../../prisma/prisma.mock";
+import { AppError } from "../../../src/lib/appError";
 
-import { getAllTeams, getTeamById, createTeam, updateTeam, deleteTeam } from "../../src/modules/teams/teams.service";
+import { getAllTeams, getTeamById, createTeam, updateTeam, deleteTeam } from "../../../src/modules/teams/teams.service";
 
 describe("Teams Service", () => {
   const baseTeam = {
@@ -146,7 +146,6 @@ describe("Teams Service", () => {
   // -----------------------------------------------------
 
   it("throws MISSING_ID_TEAM_PARAMETER when id is missing", async () => {
-    // @ts-expect-error runtime case
     await expect(
       updateTeam({
         id: "",

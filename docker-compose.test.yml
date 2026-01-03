@@ -1,0 +1,17 @@
+services:
+  db-test:
+    image: postgres:16-alpine
+    container_name: scrumforge_test_db
+    environment:
+      POSTGRES_DB: scrumforge_test
+      POSTGRES_USER: scrumforge_test
+      POSTGRES_PASSWORD: scrumforge_test
+    ports:
+      - "5441:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scrumforge_test -d scrumforge_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 10

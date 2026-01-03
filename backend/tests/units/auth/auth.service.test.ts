@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { prismaMock } from "../prisma/prisma.mock";
-import { AppError } from "../../src/lib/appError";
+import { prismaMock } from "../../prisma/prisma.mock";
+import { AppError } from "../../../src/lib/appError";
 
-import { login, getCurrentUser } from "../../src/modules/auth/auth.service";
-import { comparePassword, generateToken } from "../../src/lib/auth.utils";
+import { login, getCurrentUser } from "../../../src/modules/auth/auth.service";
+import { comparePassword, generateToken } from "../../../src/lib/auth.utils";
 
-vi.mock("../../src/lib/auth.utils", () => ({
+vi.mock("../../../src/lib/auth.utils", () => ({
   comparePassword: vi.fn(),
   generateToken: vi.fn(),
 }));
