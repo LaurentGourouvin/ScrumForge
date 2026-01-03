@@ -67,4 +67,4 @@ jobs:
           API_PORT: 4020
           TEST_DEBUG: false
           TEST_PERSIST_DB: false
-        run: npm run test:integration
+        run: npm run test:integration:ci
