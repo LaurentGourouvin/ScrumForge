@@ -43,6 +43,8 @@ jobs:
 
       - name: Generate Prisma Client
         working-directory: backend
+        env:
+          DATABASE_URL: postgresql://scrumforge_test:scrumforge_test@localhost:5441/scrumforge_test
         run: npx prisma generate
 
       - name: Run migrations
