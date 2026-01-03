@@ -16,7 +16,7 @@ export async function login(req: Request, res: Response) {
 
     return res.status(200).json({
       success: true,
-      message: "Login successful",
+      message: "Login successfull",
       user: userRow.user,
     });
   } catch (error: any) {
