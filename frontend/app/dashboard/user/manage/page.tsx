@@ -7,9 +7,9 @@ import { LoaderCircleIcon, CircleX } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/hooks/useAuth";
 import { getAllUsers } from "@/app/lib/api/users.api";
-import type { User } from "@/types/user.type";
+import type { UpdateUserInput, User } from "@/types/user.type";
 import ManageUserDeleteModal from "@/app/component/user/ManageUserDeleteModal";
-import { deleteUser } from "@/app/lib/api/users.api";
+import { deleteUser, updateUser } from "@/app/lib/api/users.api";
 import toast from "react-hot-toast";
 import UpdateUserFormModal from "@/app/component/user/UpdateUserFormModal";
 
@@ -35,6 +35,23 @@ export default function UserManagePage() {
       toast.error("An error occured.");
     } finally {
       setShowDeleteModal(false);
+    }
+  };
+
+  const handleUpdateAction = async (user: UpdateUserInput) => {
+    if (!selectedUser) {
+      throw new Error("USER_ID_MISSING");
+    }
+    try {
+      await updateUser(selectedUser.id, { ...user });
+      toast.success("User successfully updated.");
+
+      const users = await getAllUsers();
+      setUsersList(users);
+    } catch (err: any) {
+      toast.error("An error occured.");
+    } finally {
+      setShowEditModal(false);
     }
   };
 
@@ -92,7 +109,9 @@ export default function UserManagePage() {
           <ManageUserDeleteModal onShowModal={setShowDeleteModal} user={selectedUser} onDelete={handleDeleteAction} />
         )}
         {/* Update modal */}
-        {showEditModal && <UpdateUserFormModal onShowModal={setShowEditModal} user={selectedUser} />}
+        {showEditModal && (
+          <UpdateUserFormModal onShowModal={setShowEditModal} user={selectedUser} onUpdate={handleUpdateAction} />
+        )}
       </DefaultLayout>
     </ProtectedRoute>
   );

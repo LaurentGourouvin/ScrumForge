@@ -14,3 +14,10 @@ export interface CreateUserInput {
   name?: string;
   role: string;
 }
+
+export interface UpdateUserInput {
+  email?: string;
+  name?: string;
+  role?: string;
+  newPassword?: string;
+}

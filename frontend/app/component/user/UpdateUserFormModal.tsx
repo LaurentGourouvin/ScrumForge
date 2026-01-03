@@ -4,14 +4,20 @@ import { CircleX, LoaderCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import * as RolesService from "@/app/lib/api/roles.api";
 import { mapRolesToOptions } from "@/app/utils/roles.utils";
-import { User } from "@/types/user.type";
+import { UpdateUserInput, User } from "@/types/user.type";
+import { isValidPassword } from "@/app/lib/password/PasswordValidator";
+import { updateUser } from "@/app/lib/api/users.api";
+import toast from "react-hot-toast";
+import { on } from "events";
 
 export default function UpdateUserFormModal({
   user,
   onShowModal,
+  onUpdate,
 }: {
   user: User | null;
   onShowModal: (v: boolean) => void;
+  onUpdate: (user: UpdateUserInput) => void;
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +27,22 @@ export default function UpdateUserFormModal({
   const [error, setError] = useState<string | null>(null);
   const [roleList, setRoleList] = useState<{ label: string; value: string }[]>([]);
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    if (password && !isValidPassword(password)) {
+      setError(
+        "Password must be at least 12 characters long and include uppercase, lowercase, and a special character."
+      );
+
+      setIsLoading(false);
+      return;
+    }
+
+    onUpdate({ email, name, newPassword: password, role });
+
+    setIsLoading(false);
+  };
 
   const onCancel = () => {
     setEmail("");
