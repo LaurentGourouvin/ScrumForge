@@ -25,7 +25,7 @@ describe("Users Service", () => {
     email: "john.doe@example.com",
     name: "John Doe",
     role: "ADMIN",
-    passwordHash: "hashed-password",
+    //passwordHash: "hashed-password",
     createdAt: new Date(),
     updatedAt: new Date(),
   };
