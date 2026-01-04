@@ -135,7 +135,6 @@ describe("User API Integration Tests", () => {
       }
 
       const response = await request(app).post("/api/users/by-role").set("Cookie", cookies).send({ role: "DEVELOPER" });
-      console.log(response.body);
       expect(response.status).toBe(200);
       expect(response.body.users.length).toBe(2);
     });
