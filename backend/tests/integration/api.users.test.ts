@@ -3,7 +3,6 @@ import request from "supertest";
 import { setupTestDatabase, cleanDatabase, closeTestDatabase, getTestPrisma } from "./helpers/db";
 import { app } from "../../src/index";
 import { loginAsAdmin } from "./helpers/login";
-import { use } from "react";
 
 describe("User API Integration Tests", () => {
   beforeAll(async () => {
