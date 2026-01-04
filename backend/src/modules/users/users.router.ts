@@ -17,6 +17,7 @@ userRouter.patch(
   validateBody(UserSchema.updateCurrentPassword),
   UsersController.updateCurrentUserPassword
 );
+userRouter.post("/by-role/", authMiddleware, UsersController.getAllUsersByRole);
 
 /** ============================ */
 /**     Admin and manager routes */
