@@ -2,14 +2,35 @@ import { Role, TeamMember, User } from "../../../prisma/generated/prisma/client"
 import { AppError } from "../../lib/appError";
 import { hashPassword, comparePassword } from "../../lib/auth.utils";
 import { prisma } from "../../lib/prisma";
-import { CreateUserInput, UpdateUserInput, UpdateUserPasswordInput } from "./users.type";
+import { CreateUserInput, UpdateUserInput, UpdateUserPasswordInput, UserResultWithoutPassword } from "./users.type";
 
-export async function getAllUsers(): Promise<{ users: User[]; count: number }> {
+export async function getAllUsers(): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
   const users = await prisma.user.findMany();
-  return { users, count: users.length };
+
+  const usersWithoutPassword = users.map((user) => {
+    const { passwordHash, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  });
+
+  return { users: usersWithoutPassword, count: users.length };
 }
 
-export async function getUserById(id: string): Promise<User> {
+export async function getAllUsersByRole(role: string): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
+  if (!role) {
+    throw new AppError("MISSING_ROLE_PARAMETER", 400);
+  }
+
+  const users = await prisma.user.findMany({ where: { role: role as Role, isActive: true } });
+
+  const usersWithoutPassword = users.map((user) => {
+    const { passwordHash, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  });
+
+  return { users: usersWithoutPassword, count: users.length };
+}
+
+export async function getUserById(id: string): Promise<UserResultWithoutPassword> {
   if (!id) {
     throw new AppError("MISSING_ID_USER", 400);
   }
@@ -20,7 +41,8 @@ export async function getUserById(id: string): Promise<User> {
     throw new AppError("USER_NOT_FOUND", 404);
   }
 
-  return user;
+  const { passwordHash, ...userWithoutPassword } = user;
+  return userWithoutPassword;
 }
 
 export async function getUsersByTeamId(id: string): Promise<{ users: TeamMember[]; count: number }> {

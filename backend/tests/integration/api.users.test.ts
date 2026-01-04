@@ -116,4 +116,28 @@ describe("User API Integration Tests", () => {
       expect(deleteResponse.status).toBe(401);
     });
   });
+
+  describe("POST /api/users/by-role", () => {
+    it("should return users by role with valid cookie", async () => {
+      const prisma = getTestPrisma();
+
+      const cookies = await loginAsAdmin(app, prisma);
+
+      // Create users with different roles
+      const usersToCreate = [
+        { email: "developer1@scrumforge.com", password: "SecurePass123!", role: "DEVELOPER", name: "Developer One" },
+        { email: "developer2@scrumforge.com", password: "SecurePass123!", role: "DEVELOPER", name: "Developer Two" },
+        { email: "manager@scrumforge.com", password: "SecurePass123!", role: "SCRUM_MASTER", name: "Scrum Master" },
+      ];
+
+      for (const user of usersToCreate) {
+        await request(app).post("/api/users").set("Cookie", cookies).send(user);
+      }
+
+      const response = await request(app).post("/api/users/by-role").set("Cookie", cookies).send({ role: "DEVELOPER" });
+      console.log(response.body);
+      expect(response.status).toBe(200);
+      expect(response.body.users.length).toBe(2);
+    });
+  });
 });

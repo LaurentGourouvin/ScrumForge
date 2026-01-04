@@ -10,6 +10,16 @@ export async function getAllUsers(req: Request, res: Response) {
   }
 }
 
+export async function getAllUsersByRole(req: Request, res: Response) {
+  try {
+    const role = req.body.role;
+    const users = await UsersService.getAllUsersByRole(role);
+    return res.status(200).json(users);
+  } catch (error: any) {
+    return res.status(error.status || 500).json(error.message || "Internal server error");
+  }
+}
+
 export async function getUserById(req: Request, res: Response) {
   const id = req.params.id || "";
   try {

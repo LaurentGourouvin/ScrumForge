@@ -20,3 +20,12 @@ export interface UpdateUserPasswordInput {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface UserResultWithoutPassword {
+  id: string;
+  email: string;
+  name?: string | null;
+  role: Role;
+  createdAt: Date;
+  updatedAt: Date;
+}
