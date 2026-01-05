@@ -5,14 +5,14 @@ import { prisma } from "../../lib/prisma";
 import { CreateUserInput, UpdateUserInput, UpdateUserPasswordInput, UserResultWithoutPassword } from "./users.type";
 
 export async function getAllUsers(
-  limit?: number,
-  cursor?: string
-): Promise<{ users: UserResultWithoutPassword[]; count: number; nextCursor?: string | null }> {
+  limit: number,
+  page: number
+): Promise<{ users: UserResultWithoutPassword[]; count: number; page?: number; limit?: number }> {
   if (!limit) {
     return await getAllUsersWithNoPagination();
   }
 
-  return await getAllUsersWithPagination(limit, cursor);
+  return await getAllUsersPaginate(limit, page);
 }
 
 export async function getAllUsersByRole(role: string): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
@@ -221,32 +221,25 @@ async function getAllUsersWithNoPagination(): Promise<{ users: UserResultWithout
   return { users: usersWithoutPassword, count: users.length };
 }
 
-async function getAllUsersWithPagination(
+async function getAllUsersPaginate(
   limit: number,
-  cursor?: string
-): Promise<{ users: UserResultWithoutPassword[]; count: number; nextCursor?: string | null }> {
-  const queryOptions: any = {
-    take: limit,
-    orderBy: { createdAt: "asc" },
-  };
-
-  if (cursor) {
-    queryOptions.skip = 1;
-    queryOptions.cursor = { id: cursor };
-  }
-
-  const users = await prisma.user.findMany(queryOptions);
+  page: number
+): Promise<{
+  users: UserResultWithoutPassword[];
+  count: number;
+  page: number;
+  limit: number;
+}> {
+  // Implement pagination logic here
+  // This is a placeholder implementation
+  const users = await prisma.user.findMany({
+    // Add pagination parameters here
+  });
 
   const usersWithoutPassword = users.map((user) => {
     const { passwordHash, ...userWithoutPassword } = user;
     return userWithoutPassword;
   });
 
-  const totalUsersCount = await prisma.user.count();
-
-  const lastUser = users.at(-1);
-
-  const nextCursor = users.length === limit && lastUser ? lastUser.id : null;
-
-  return { users: usersWithoutPassword, count: totalUsersCount, nextCursor };
+  return { users: usersWithoutPassword, count: users.length, page: 1, limit: 10 };
 }
