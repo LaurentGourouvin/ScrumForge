@@ -59,7 +59,7 @@ export default function UserManagePage() {
     setIsLoading(true);
     const loadUsers = async () => {
       try {
-        const users = await getAllUsers();
+        const users = await getAllUsers(10);
         setUsersList(users);
       } catch (error: any) {
         console.error(error);
