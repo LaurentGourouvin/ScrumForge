@@ -4,15 +4,15 @@ import { hashPassword, comparePassword } from "../../lib/auth.utils";
 import { prisma } from "../../lib/prisma";
 import { CreateUserInput, UpdateUserInput, UpdateUserPasswordInput, UserResultWithoutPassword } from "./users.type";
 
-export async function getAllUsers(): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
-  const users = await prisma.user.findMany();
+export async function getAllUsers(
+  limit?: number,
+  cursor?: string
+): Promise<{ users: UserResultWithoutPassword[]; count: number; nextCursor?: string | null }> {
+  if (!limit) {
+    return await getAllUsersWithNoPagination();
+  }
 
-  const usersWithoutPassword = users.map((user) => {
-    const { passwordHash, ...userWithoutPassword } = user;
-    return userWithoutPassword;
-  });
-
-  return { users: usersWithoutPassword, count: users.length };
+  return await getAllUsersWithPagination(limit, cursor);
 }
 
 export async function getAllUsersByRole(role: string): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
@@ -208,4 +208,45 @@ export async function deleteUser(id: string): Promise<{ success: boolean }> {
 
     throw error;
   }
+}
+
+async function getAllUsersWithNoPagination(): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
+  const users = await prisma.user.findMany();
+
+  const usersWithoutPassword = users.map((user) => {
+    const { passwordHash, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  });
+
+  return { users: usersWithoutPassword, count: users.length };
+}
+
+async function getAllUsersWithPagination(
+  limit: number,
+  cursor?: string
+): Promise<{ users: UserResultWithoutPassword[]; count: number; nextCursor?: string | null }> {
+  const queryOptions: any = {
+    take: limit,
+    orderBy: { createdAt: "asc" },
+  };
+
+  if (cursor) {
+    queryOptions.skip = 1;
+    queryOptions.cursor = { id: cursor };
+  }
+
+  const users = await prisma.user.findMany(queryOptions);
+
+  const usersWithoutPassword = users.map((user) => {
+    const { passwordHash, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  });
+
+  const totalUsersCount = await prisma.user.count();
+
+  const lastUser = users.at(-1);
+
+  const nextCursor = users.length === limit && lastUser ? lastUser.id : null;
+
+  return { users: usersWithoutPassword, count: totalUsersCount, nextCursor };
 }
