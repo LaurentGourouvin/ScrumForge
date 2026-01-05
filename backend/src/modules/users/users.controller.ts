@@ -3,7 +3,9 @@ import * as UsersService from "./users.service";
 
 export async function getAllUsers(req: Request, res: Response) {
   try {
-    const users = await UsersService.getAllUsers();
+    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
+    const cursor = req.query.cursor ? (req.query.cursor as string) : undefined;
+    const users = await UsersService.getAllUsers(limit, cursor);
     return res.status(200).json(users);
   } catch (error: any) {
     return res.status(error.status || 500).json(error.message || "Internal server error");
