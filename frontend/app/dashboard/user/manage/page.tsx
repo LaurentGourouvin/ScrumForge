@@ -48,7 +48,7 @@ export default function UserManagePage() {
       await updateUser(selectedUser.id, { ...user });
       toast.success("User successfully updated.");
 
-      const users = await getAllUsers();
+      const users = await getAllUsersPaginate(currentPage, 10);
       setUsersList(users);
     } catch (err: any) {
       toast.error("An error occured.");
