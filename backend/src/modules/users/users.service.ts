@@ -5,14 +5,14 @@ import { prisma } from "../../lib/prisma";
 import { CreateUserInput, UpdateUserInput, UpdateUserPasswordInput, UserResultWithoutPassword } from "./users.type";
 
 export async function getAllUsers(
-  limit?: number,
-  cursor?: string
-): Promise<{ users: UserResultWithoutPassword[]; count: number; nextCursor?: string | null }> {
+  limit: number | undefined,
+  page: number
+): Promise<{ users: UserResultWithoutPassword[]; total?: number; page?: number; limit?: number }> {
   if (!limit) {
     return await getAllUsersWithNoPagination();
   }
 
-  return await getAllUsersWithPagination(limit, cursor);
+  return await getAllUsersPaginate(limit, page);
 }
 
 export async function getAllUsersByRole(role: string): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
@@ -210,43 +210,43 @@ export async function deleteUser(id: string): Promise<{ success: boolean }> {
   }
 }
 
-async function getAllUsersWithNoPagination(): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
-  const users = await prisma.user.findMany();
+async function getAllUsersWithNoPagination(): Promise<{ users: UserResultWithoutPassword[]; total: number }> {
+  const users = await prisma.user.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   const usersWithoutPassword = users.map((user) => {
     const { passwordHash, ...userWithoutPassword } = user;
     return userWithoutPassword;
   });
 
-  return { users: usersWithoutPassword, count: users.length };
+  return { users: usersWithoutPassword, total: users.length };
 }
 
-async function getAllUsersWithPagination(
+async function getAllUsersPaginate(
   limit: number,
-  cursor?: string
-): Promise<{ users: UserResultWithoutPassword[]; count: number; nextCursor?: string | null }> {
-  const queryOptions: any = {
+  page: number
+): Promise<{
+  users: UserResultWithoutPassword[];
+  count: number;
+  page: number;
+  limit: number;
+  totalPage: number;
+}> {
+  const users = await prisma.user.findMany({
+    skip: (page - 1) * limit,
     take: limit,
-    orderBy: { createdAt: "asc" },
-  };
+    orderBy: { createdAt: "desc" },
+  });
 
-  if (cursor) {
-    queryOptions.skip = 1;
-    queryOptions.cursor = { id: cursor };
-  }
+  const totalUser = await prisma.user.count();
 
-  const users = await prisma.user.findMany(queryOptions);
+  const totalPage = Math.ceil(totalUser / limit);
 
   const usersWithoutPassword = users.map((user) => {
     const { passwordHash, ...userWithoutPassword } = user;
     return userWithoutPassword;
   });
 
-  const totalUsersCount = await prisma.user.count();
-
-  const lastUser = users.at(-1);
-
-  const nextCursor = users.length === limit && lastUser ? lastUser.id : null;
-
-  return { users: usersWithoutPassword, count: totalUsersCount, nextCursor };
+  return { users: usersWithoutPassword, count: users.length, page: page, limit: limit, totalPage: totalPage };
 }

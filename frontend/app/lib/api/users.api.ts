@@ -10,24 +10,28 @@ export async function create(user: CreateUserInput): Promise<User> {
   return res.data;
 }
 
-export async function getAllUsers(limit?: number, cursor?: string): Promise<{ users: User[] }> {
-  let res: AxiosResponse;
+export async function getAllUsers(): Promise<{ users: User[] }> {
+  const res = await AxiosScrumForge.get<{ users: User[] }>("/users", {
+    withCredentials: true,
+  });
 
-  if (!limit) {
-    res = await AxiosScrumForge.get<{ users: User[] }>("/users", {
-      withCredentials: true,
-    });
-  } else {
-    const params: Record<string, string | number> = {};
+  return res.data;
+}
 
-    if (limit !== undefined) params.limit = limit;
-    if (cursor !== undefined) params.cursor = cursor;
-
-    res = await AxiosScrumForge.get<{ users: User[] }>(`/users`, {
-      withCredentials: true,
-      params,
-    });
-  }
+export async function getAllUsersPaginate(
+  page: number = 1,
+  limit: number = 10
+): Promise<{ users: User[]; count: number; page: number; limit: number; totalPage: number }> {
+  const res = await AxiosScrumForge.get<{
+    users: User[];
+    count: number;
+    page: number;
+    limit: number;
+    totalPage: number;
+  }>("/users", {
+    params: { page, limit },
+    withCredentials: true,
+  });
 
   return res.data;
 }

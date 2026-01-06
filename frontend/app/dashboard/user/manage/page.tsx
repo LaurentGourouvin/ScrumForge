@@ -6,7 +6,7 @@ import ManageUserFormFilter from "@/app/component/user/ManageUserFormFilter";
 import { LoaderCircleIcon, CircleX } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/hooks/useAuth";
-import { getAllUsers } from "@/app/lib/api/users.api";
+import { getAllUsers, getAllUsersPaginate } from "@/app/lib/api/users.api";
 import type { UpdateUserInput, User } from "@/types/user.type";
 import ManageUserDeleteModal from "@/app/component/user/ManageUserDeleteModal";
 import { deleteUser, updateUser } from "@/app/lib/api/users.api";
@@ -20,6 +20,8 @@ export default function UserManagePage() {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [totalPage, setTotalPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const handleDeleteAction = async () => {
     if (!selectedUser) {
@@ -55,12 +57,17 @@ export default function UserManagePage() {
     }
   };
 
+  const prevPage = () => setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
+  const nextPage = () => setCurrentPage((prev) => (prev < totalPage ? prev + 1 : prev));
+
   useEffect(() => {
     setIsLoading(true);
     const loadUsers = async () => {
       try {
-        const users = await getAllUsers(10);
+        const users = await getAllUsersPaginate(currentPage, 10);
         setUsersList(users);
+        setTotalPage(users.totalPage);
+        setCurrentPage(users.page);
       } catch (error: any) {
         console.error(error);
       } finally {
@@ -68,7 +75,7 @@ export default function UserManagePage() {
       }
     };
     loadUsers();
-  }, []);
+  }, [currentPage]);
 
   return (
     <ProtectedRoute>
@@ -85,7 +92,7 @@ export default function UserManagePage() {
           </button>
         }
       >
-        <ManageUserFormFilter />
+        <ManageUserFormFilter prevPage={prevPage} nextPage={nextPage} />
         <div className="flex flex-wrap mt-10 gap-5">
           {isLoading ? (
             <LoaderCircleIcon size={46} className="animate-spin text-white mx-auto" />

@@ -56,12 +56,12 @@ describe("Users Service", () => {
   it("returns all users with count", async () => {
     prismaMock.user.findMany.mockResolvedValue([baseUser] as any);
 
-    const result = await getAllUsers();
+    const result = await getAllUsers(undefined, 1);
 
     expect(prismaMock.user.findMany).toHaveBeenCalledTimes(1);
     expect(result).toEqual({
       users: [baseUser],
-      count: 1,
+      total: 1,
     });
   });
 
