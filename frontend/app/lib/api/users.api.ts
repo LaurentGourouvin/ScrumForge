@@ -1,6 +1,5 @@
 import { User, CreateUserInput, UpdateUserInput } from "@/types/user.type";
 import AxiosScrumForge from "../axios/AxiosScrumForge";
-import { AxiosResponse } from "axios";
 
 export async function create(user: CreateUserInput): Promise<User> {
   const res = await AxiosScrumForge.post<User>("/users", user, {

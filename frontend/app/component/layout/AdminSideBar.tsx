@@ -73,9 +73,11 @@ export default function AdminSideBar() {
       </div>
       <nav>
         <Link
-          href="#"
+          href="/dashboard/team/create"
           className={`block px-5 py-2 text-sm transition-colors ${
-            isActive("/team/create") ? "bg-[#20252c] text-white" : "text-steel-sf hover:bg-[#20252c] hover:text-white"
+            isActive("/dashboard/team/create")
+              ? "bg-[#20252c] text-white"
+              : "text-steel-sf hover:bg-[#20252c] hover:text-white"
           }`}
         >
           Create Team

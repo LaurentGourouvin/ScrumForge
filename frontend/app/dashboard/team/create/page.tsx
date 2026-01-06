@@ -1,16 +1,17 @@
 "use client";
 import ProtectedRoute from "@/app/component/auth/ProtectedRoute";
 import DefaultLayout from "@/app/component/layout/DefaultLayout";
-import CreateUserForm from "@/app/component/user/CreateUserForm";
+import CreateTeamForm from "@/app/component/team/CreateTeamForm";
 import { useAuth } from "@/app/hooks/useAuth";
-export default function UserCreatePage() {
+
+export default function TeamCreatePage() {
   const { user, logout } = useAuth();
 
   return (
     <ProtectedRoute>
       <DefaultLayout
         topbarTitle="Dashboard"
-        topbarSubtitle="Users"
+        topbarSubtitle="Teams"
         topbarActions={
           <button
             onClick={logout}
@@ -21,7 +22,7 @@ export default function UserCreatePage() {
           </button>
         }
       >
-        <CreateUserForm />
+        <CreateTeamForm />
       </DefaultLayout>
     </ProtectedRoute>
   );
