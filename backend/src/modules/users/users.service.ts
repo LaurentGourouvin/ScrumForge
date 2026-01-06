@@ -5,9 +5,9 @@ import { prisma } from "../../lib/prisma";
 import { CreateUserInput, UpdateUserInput, UpdateUserPasswordInput, UserResultWithoutPassword } from "./users.type";
 
 export async function getAllUsers(
-  limit: number,
+  limit: number | undefined,
   page: number
-): Promise<{ users: UserResultWithoutPassword[]; count: number; page?: number; limit?: number }> {
+): Promise<{ users: UserResultWithoutPassword[]; total?: number; page?: number; limit?: number }> {
   if (!limit) {
     return await getAllUsersWithNoPagination();
   }
@@ -210,15 +210,17 @@ export async function deleteUser(id: string): Promise<{ success: boolean }> {
   }
 }
 
-async function getAllUsersWithNoPagination(): Promise<{ users: UserResultWithoutPassword[]; count: number }> {
-  const users = await prisma.user.findMany();
+async function getAllUsersWithNoPagination(): Promise<{ users: UserResultWithoutPassword[]; total: number }> {
+  const users = await prisma.user.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   const usersWithoutPassword = users.map((user) => {
     const { passwordHash, ...userWithoutPassword } = user;
     return userWithoutPassword;
   });
 
-  return { users: usersWithoutPassword, count: users.length };
+  return { users: usersWithoutPassword, total: users.length };
 }
 
 async function getAllUsersPaginate(
@@ -229,17 +231,22 @@ async function getAllUsersPaginate(
   count: number;
   page: number;
   limit: number;
+  totalPage: number;
 }> {
-  // Implement pagination logic here
-  // This is a placeholder implementation
   const users = await prisma.user.findMany({
-    // Add pagination parameters here
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: { createdAt: "desc" },
   });
+
+  const totalUser = await prisma.user.count();
+
+  const totalPage = Math.ceil(totalUser / limit);
 
   const usersWithoutPassword = users.map((user) => {
     const { passwordHash, ...userWithoutPassword } = user;
     return userWithoutPassword;
   });
 
-  return { users: usersWithoutPassword, count: users.length, page: 1, limit: 10 };
+  return { users: usersWithoutPassword, count: users.length, page: page, limit: limit, totalPage: totalPage };
 }
