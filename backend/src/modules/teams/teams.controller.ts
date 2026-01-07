@@ -80,3 +80,15 @@ export async function addTeamMember(req: Request, res: Response) {
     return res.status(error.status || 500).json({ error: error.message || "Internal server error" });
   }
 }
+
+export async function removeTeamMember(req: Request, res: Response) {
+  const teamId = req.params.id || "";
+  const memberId = req.params.memberId || "";
+
+  try {
+    const member = await TeamsService.removeTeamMember(teamId, memberId);
+    return res.status(200).json({ success: true });
+  } catch (error: any) {
+    return res.status(error.status || 500).json({ error: error.message || "Internal server error" });
+  }
+}

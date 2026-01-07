@@ -21,7 +21,13 @@ teamsRouter.post(
   requireRole("ADMIN", "ORGANIZATION_MANAGER"),
   TeamsController.addTeamMember
 );
-teamsRouter.delete("/:id/member", authMiddleware, requireRole("ADMIN", "ORGANIZATION_MANAGER"));
+teamsRouter.delete(
+  "/:id/member/:memberId",
+  authMiddleware,
+  validateParams(TeamsValidation.removeTeamMember),
+  requireRole("ADMIN", "ORGANIZATION_MANAGER"),
+  TeamsController.removeTeamMember
+);
 
 // Teams
 teamsRouter.get("/", authMiddleware, TeamsController.getAllTeamController);

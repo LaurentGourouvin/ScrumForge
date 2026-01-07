@@ -12,3 +12,10 @@ export const getTeamMember = z
     id: z.uuid(),
   })
   .strict();
+
+export const removeTeamMember = z
+  .object({
+    id: z.uuid(),
+    memberId: z.uuid(),
+  })
+  .strict();

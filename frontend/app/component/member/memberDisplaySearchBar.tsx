@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { ActionMember, Team } from "@/types/team.type";
 import { X, Search } from "lucide-react";
-import { User } from "@/types/user.type";
-import { addTeamMember } from "@/app/lib/api/teams.api";
+import { User, UserPublic } from "@/types/user.type";
+import { addTeamMember, removeTeamMember } from "@/app/lib/api/teams.api";
 import toast from "react-hot-toast";
 
 export default function MemberDisplaySearchBar({
@@ -15,7 +15,7 @@ export default function MemberDisplaySearchBar({
   onSuccess,
 }: {
   teamId: string;
-  users: User[];
+  users: User[] | UserPublic[];
   action: ActionMember;
   onClose: () => void;
   onSuccess: () => Promise<void>;
@@ -29,10 +29,14 @@ export default function MemberDisplaySearchBar({
     return name.includes(query) || email.includes(query);
   });
 
-  const addMember = async (id: string) => {
+  const processMember = async (id: string) => {
     if (!id) return;
     try {
-      const resultAddMember = await addTeamMember(teamId, id);
+      if (action === "ADD") {
+        const resultAddMember = await addTeamMember(teamId, id);
+      } else {
+        const resultRemoveMember = await removeTeamMember(teamId, id);
+      }
       toast.success("Team updated.");
       await onSuccess();
     } catch (error: any) {
@@ -126,7 +130,7 @@ export default function MemberDisplaySearchBar({
                     <td className="py-4 px-4 text-right">
                       <button
                         onClick={async () => {
-                          addMember(user.id);
+                          processMember(user.id);
                         }}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           action === "ADD"

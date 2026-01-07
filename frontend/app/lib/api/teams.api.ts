@@ -45,3 +45,10 @@ export async function addTeamMember(teamId: string, id: string): Promise<{ succe
   );
   return res.data;
 }
+
+export async function removeTeamMember(teamId: string, id: string): Promise<{ success: boolean }> {
+  const res = await AxiosScrumForge.delete<{ success: boolean }>(`/teams/${teamId}/member/${id}`, {
+    withCredentials: true,
+  });
+  return res.data;
+}

@@ -47,6 +47,11 @@ export default function TeamManagePage() {
     setAction("ADD");
   };
 
+  const removeMemberProcess = () => {
+    setIsOpenModal(true);
+    setAction("REMOVE");
+  };
+
   const closeModal = () => {
     setIsOpenModal(false);
   };
@@ -98,6 +103,7 @@ export default function TeamManagePage() {
                hover:bg-[#1f2329]
                hover:cursor-pointer
                transition-colors"
+            onClick={removeMemberProcess}
           >
             <UserRoundMinus size={20} />
             Remove member

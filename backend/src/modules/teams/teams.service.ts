@@ -246,6 +246,33 @@ export async function addTeamMember(teamId: string, memberId: string): Promise<T
   }
 }
 
+export async function removeTeamMember(teamId: string, memberId: string): Promise<{ success: boolean }> {
+  if (!teamId) {
+    throw new AppError("MISSING_ID_TEAM_PARAMETER", 400);
+  }
+  if (!memberId) {
+    throw new AppError("MISSING_ID_MEMBER_PARAMETER", 400);
+  }
+
+  try {
+    await prisma.teamMember.delete({
+      where: {
+        teamId_userId: {
+          teamId,
+          userId: memberId,
+        },
+      },
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    if (error.code === "P2025") {
+      throw new AppError("USER_NOT_LINKED_TO_TEAM", 404);
+    }
+    throw error;
+  }
+}
+
 async function getAllTeamsPaginate(
   limit: number,
   page: number
