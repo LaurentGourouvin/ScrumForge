@@ -179,3 +179,26 @@ export async function deleteTeam(id: string): Promise<{ success: boolean }> {
     throw error;
   }
 }
+
+async function getAllTeamsPaginate(
+  limit: number,
+  page: number
+): Promise<{
+  teams: Team[];
+  count: number;
+  page: number;
+  limit: number;
+  totalPage: number;
+}> {
+  const teams = await prisma.team.findMany({
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: { createdAt: "desc" },
+  });
+
+  const totalTeams = await prisma.team.count();
+
+  const totalPage = Math.ceil(totalTeams / limit);
+
+  return { teams: teams, count: totalTeams, page: page, limit: limit, totalPage: totalPage };
+}
