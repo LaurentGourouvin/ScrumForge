@@ -15,7 +15,7 @@ export default function ManageUserCard({
 }) {
   return (
     <div className="border border-[#2A2F36] rounded-md p-2 bg-slate-sf text-steel-sf w-[300px] wrap-break-word">
-      <p className="pb-2">{user?.email}</p>
+      <p className="pb-2 text-gray-300">{user?.email}</p>
       <hr className="border-b border-[#2A2F36] my-2" />
       <p className="pb-2">Role : {user?.role}</p>
       <p className="pb-2">Name : {user?.name}</p>

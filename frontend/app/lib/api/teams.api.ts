@@ -15,6 +15,13 @@ export async function getAllTeams(): Promise<{ teams: Team[] }> {
   return res.data;
 }
 
+export async function getTeamById(id: string): Promise<Team> {
+  const res = await AxiosScrumForge.get<{ team: Team }>(`/teams/${id}`, {
+    withCredentials: true,
+  });
+  return res.data.team;
+}
+
 export async function deleteTeam(id: string) {
   const res = await AxiosScrumForge.delete<{ success: boolean }>(`/teams/${id}`, { withCredentials: true });
   return res.data;

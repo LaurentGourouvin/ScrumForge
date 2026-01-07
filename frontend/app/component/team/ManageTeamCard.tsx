@@ -1,7 +1,7 @@
+"use client";
 import { Team } from "@/types/team.type";
-import { User } from "@/types/user.type";
-import { Trash2 } from "lucide-react";
-import { UserRoundPen } from "lucide-react";
+import { UserRoundPen, UserRoundCog, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ManageTeamCard({
   team,
@@ -14,9 +14,11 @@ export default function ManageTeamCard({
   onSelect: (team: Team) => void;
   onShowDeleteModal: (v: boolean) => void;
 }) {
+  const router = useRouter();
+
   return (
     <div className="border border-[#2A2F36] rounded-md p-2 bg-slate-sf text-steel-sf w-[300px] wrap-break-word">
-      <p className="pb-2">{team?.name}</p>
+      <p className="pb-2 text-gray-300">{team?.name}</p>
       <hr className="border-b border-[#2A2F36] my-2" />
       <p className="pb-2">Name : {team?.description}</p>
       <p className="pb-2">
@@ -35,6 +37,13 @@ export default function ManageTeamCard({
             onShowEditModal(true);
           }}
         />
+
+        <UserRoundCog
+          size={20}
+          className="text-blue-300 hover:text-blue-200 hover:cursor-pointer"
+          onClick={() => router.push(`/dashboard/team/${team.id}/member`)}
+        />
+
         <Trash2
           size={20}
           className="text-red-500 hover:text-red-400 hover:cursor-pointer"
