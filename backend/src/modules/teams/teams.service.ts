@@ -1,7 +1,7 @@
-import { TeamsResult, TeamResult, TeamCreationPayload, TeamUpdatePayload } from "./teams.type";
+import { TeamsResult, TeamResult, TeamCreationPayload, TeamUpdatePayload, GetTeamMembersResult } from "./teams.type";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../lib/appError";
-import { Team } from "../../../prisma/generated/prisma/client";
+import { Team, TeamMember } from "../../../prisma/generated/prisma/client";
 
 /**
  * Retrieves all teams from the database.
@@ -176,6 +176,99 @@ export async function deleteTeam(id: string): Promise<{ success: boolean }> {
       throw new AppError("TEAM_NOT_FOUND", 404);
     }
 
+    throw error;
+  }
+}
+
+export async function getTeamMembers(id: string): Promise<GetTeamMembersResult> {
+  if (!id) {
+    throw new AppError("MISSING_ID_TEAM_PARAMETER", 400);
+  }
+
+  try {
+    const members = await prisma.teamMember.findMany({
+      where: { teamId: id, user: { isActive: true } },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            isActive: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return { members: members, count: members.length };
+  } catch (error: any) {
+    if (error.code === "P2025") {
+      throw new AppError("TEAM_NOT_FOUND", 404);
+    }
+
+    throw error;
+  }
+}
+
+export async function addTeamMember(teamId: string, memberId: string): Promise<TeamMember> {
+  if (!teamId) {
+    throw new AppError("MISSING_ID_TEAM_PARAMETER", 400);
+  }
+  if (!teamId) {
+    throw new AppError("MISSING_ID_MEMBER_PARAMETER", 400);
+  }
+
+  try {
+    const findMember = await prisma.user.findUnique({ where: { id: memberId } });
+
+    if (!findMember) {
+      throw new AppError("USER_NOT_FOUND", 404);
+    }
+
+    const addMember = await prisma.teamMember.create({
+      data: {
+        teamId: teamId,
+        userId: memberId,
+        role: findMember.role,
+      },
+    });
+
+    return addMember;
+  } catch (error: any) {
+    if ((error.code = "P2002")) {
+      throw new AppError("USER_ALREADY_IN_THIS_TEAM", 400);
+    }
+    throw error;
+  }
+}
+
+export async function removeTeamMember(teamId: string, memberId: string): Promise<{ success: boolean }> {
+  if (!teamId) {
+    throw new AppError("MISSING_ID_TEAM_PARAMETER", 400);
+  }
+  if (!memberId) {
+    throw new AppError("MISSING_ID_MEMBER_PARAMETER", 400);
+  }
+
+  try {
+    await prisma.teamMember.delete({
+      where: {
+        teamId_userId: {
+          teamId,
+          userId: memberId,
+        },
+      },
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    if (error.code === "P2025") {
+      throw new AppError("USER_NOT_LINKED_TO_TEAM", 404);
+    }
     throw error;
   }
 }

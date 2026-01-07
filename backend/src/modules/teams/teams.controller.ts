@@ -59,3 +59,36 @@ export async function deleteTeamController(req: Request, res: Response) {
     return res.status(error.status || 500).json({ error: error.message || "Internal server error" });
   }
 }
+
+export async function getTeamMembers(req: Request, res: Response) {
+  const id = req.params.id || "";
+  try {
+    const members = await TeamsService.getTeamMembers(id);
+    return res.status(200).json(members);
+  } catch (error: any) {
+    return res.status(error.status || 500).json({ error: error.message || "Internal server error" });
+  }
+}
+
+export async function addTeamMember(req: Request, res: Response) {
+  const teamId = req.params.id || "";
+  const memberId = req.body.id || "";
+  try {
+    const member = await TeamsService.addTeamMember(teamId, memberId);
+    return res.status(201).json(member);
+  } catch (error: any) {
+    return res.status(error.status || 500).json({ error: error.message || "Internal server error" });
+  }
+}
+
+export async function removeTeamMember(req: Request, res: Response) {
+  const teamId = req.params.id || "";
+  const memberId = req.params.memberId || "";
+
+  try {
+    const member = await TeamsService.removeTeamMember(teamId, memberId);
+    return res.status(200).json({ success: true });
+  } catch (error: any) {
+    return res.status(error.status || 500).json({ error: error.message || "Internal server error" });
+  }
+}

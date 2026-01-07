@@ -8,6 +8,16 @@ export interface User {
   updatedAt: Date;
 }
 
+export interface UserPublic {
+  id: string;
+  name: string | null;
+  email: string;
+  passwordHash?: string;
+  role: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 export interface CreateUserInput {
   email: string;
   password: string;

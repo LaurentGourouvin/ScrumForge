@@ -78,7 +78,7 @@ export default function TeamManagePage() {
     <ProtectedRoute>
       <DefaultLayout
         topbarTitle="Dashboard"
-        topbarSubtitle="Users"
+        topbarSubtitle="Teams"
         topbarActions={
           <button
             onClick={logout}
