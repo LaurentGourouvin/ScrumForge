@@ -4,12 +4,14 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { LoaderCircle } from "lucide-react";
 import { createTeam } from "@/app/lib/api/teams.api";
+import { useRouter } from "next/navigation";
 
 export default function CreateTeamForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const onCancel = () => {
     setName("");
@@ -34,9 +36,10 @@ export default function CreateTeamForm() {
     }
 
     try {
-      await createTeam(name, description);
+      const { team } = await createTeam(name, description);
       toast.success("Team created successfully!");
       onCancel();
+      router.push(`/dashboard/team/${team.id}/member`);
     } catch (err: any) {
       if (err.status === 409) {
         setError("A team with this name already exists.");
